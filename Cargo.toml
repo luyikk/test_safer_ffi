@@ -1,0 +1,18 @@
+[package]
+name = "test_safer_ffi"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = [
+    "staticlib",  # Ensure it gets compiled as a (static) C library
+    "cdylib",     # If you want a shared/dynamic C library (advanced)
+    "lib",        # For downstream Rust dependents: `examples/`, `tests/` etc.
+]
+
+[dependencies]
+safer-ffi={ version="^0.0",features =["proc_macros"] }
+
+[features]
+headers = ["safer-ffi/headers"]
