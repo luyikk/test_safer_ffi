@@ -125,3 +125,21 @@ pub fn generate_headers() -> ::std::io::Result<()> {
         .to_file("rust_points.h")?
         .generate()
 }
+
+//             Rust	                    C
+// Mutable pointer or NULL	    *mut T	Option<&mut T>
+// Mutable pointer	*mut T	    &mut T
+// Owned pointer or NULL	    *mut T	Option<repr_c::Box<T>>
+// Owned pointer	*mut T	    repr_c::Box<T>
+
+
+
+//              Rust	                                C
+// cb: extern "C" fn()                              void (*cb)(void)
+// f: extern "C" fn(arg1_t, arg2_t) -> ret_t	    ret_t (*f)(arg1_t, arg2_t)
+// transmute::<_, extern "C" fn(arg_t) -> ret_t>(f)	(ret_t (*)(arg_t)) (f)
+// type cb_t = extern "C" fn(arg_t) -> ret_t;
+// let f: cb_t = ...;
+// transmute::<_, cb_t>(f)	                        typedef ret_t (*cb_t)(arg_t);
+// cb_t f = ...;
+//                                                  (cb_t) (f)
